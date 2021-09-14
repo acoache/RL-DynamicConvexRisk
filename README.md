@@ -1,4 +1,4 @@
-## Reinforcement Learning with Dynamic Convex Risk Measures
+# Reinforcement Learning with Dynamic Convex Risk Measures
 
 This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://anthonycoache.ca/). There are two folders for the algorithmic trading and cliff walking problems respectively. Both folders have the same structure, with the following files: 
 
@@ -12,9 +12,13 @@ This Github repository regroups the Python code to run the actor-critic algorith
 
 For further details on the algorithm and theoretical aspects of the problem, please refer to our [paper](https://anthonycoache.ca/).
 
+***
+
 ### main.py
 
-This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user are the numbers of epochs, learning rates and size of the neural networks among others. The next section is the training phase and its skeleton is given in the [paper](https://anthonycoache.ca/). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
+This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user are the numbers of epochs, learning rates and size of the neural networks among others. Here is the section that the user needs to modify:
+
+The next section is the training phase and its skeleton is given in the [paper](https://anthonycoache.ca/). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
 
 ### main_plot.py
 
