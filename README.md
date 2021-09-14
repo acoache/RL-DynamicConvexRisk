@@ -20,7 +20,7 @@ This file contains the program to run the training phase. The first part concern
 
 ### main_plot.py
 
-This file contains the program to run the testing phase. The first past concerns the importation of libraries and initialization of all parameters. Note that parameters need to be identical to the ones used in main.py. The next section evaluates the policy found by the algorithm. It runs several simulations using the best behaviour found by the actor-critic algorithm. Finally it outputs graphics to assess the performance of the procedure, such as the preferred action in any possible state and the estimated distribution of the cost when following the best policy.
+This file contains the program to run the testing phase. The first part concerns the importation of libraries and initialization of all parameters. Note that parameters need to be identical to the ones used in main.py. The next section evaluates the policy found by the algorithm. It runs several simulations using the best behaviour found by the actor-critic algorithm. Finally it outputs graphics to assess the performance of the procedure, such as the preferred action in any possible state and the estimated distribution of the cost when following the best policy.
 
 ### actor_critic.py
 
