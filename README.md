@@ -16,9 +16,7 @@ For further details on the algorithm and theoretical aspects of the problem, ple
 
 ### main.py
 
-This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user are the numbers of epochs, learning rates and size of the neural networks among others.
-
-The next section is the training phase and its skeleton is given in the [paper](https://anthonycoache.ca/). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
+This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user are the numbers of epochs, learning rates and size of the neural networks among others. The next section is the training phase and its skeleton is given in the [paper](https://anthonycoache.ca/). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
 
 ### main_plot.py
 
