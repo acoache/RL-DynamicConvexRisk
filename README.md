@@ -32,7 +32,19 @@ This file contains the environment class for the RL problem, as well as function
 
 ### risk_measure.py
 
-This file has the class that creates an instance of a risk measure, with functions to compute the risk and calculate its gradient. The different risk measures implemented are the expectation, the conditional value-at-risk (CVaR), the mean-semideviation, a penalized version of the CVaR, and a linear combination of the mean and CVaR.
+This file has the class that creates an instance of a risk measure, with functions to compute the risk and calculate its gradient. The different risk measures implemented are the expectation, the conditional value-at-risk (CVaR), the mean-semideviation, a penalized version of the CVaR, and a linear combination of the mean and CVaR. More specifically, we have
+
+![equation](https://latex.codecogs.com/png.latex?%5Ctext%7BE%7D%28X%29%20%3D%20E%5BX%5D)
+
+![equation](https://latex.codecogs.com/png.latex?%5Ctext%7BCVaR%7D_%7B%5Calpha%7D%28X%29%20%3D%20%5Csup_%7B%5Cxi%20%5Cin%20U%28P%29%7D%20%5C%7B%20E%5E%7B%5Cxi%7D%5BX%5D%20%5C%7D)
+
+![equation](https://latex.codecogs.com/png.latex?%5Ctext%7BMSD%7D_%7B%5Ckappa%2C%20r%7D%28X%29%20%3D%20E%5BX%5D%20&plus;%20%5Ckappa%20%28E%5B%28X%20-%20E%5BX%5D%29%5E%7Br%7D_%7B&plus;%7D%5D%29%5E%7B1/r%7D)
+
+![equation](https://latex.codecogs.com/png.latex?%5Ctext%7BCVaR-p%7D_%7B%5Calpha%2C%5Ckappa%7D%28X%29%20%3D%20%5Csup_%7B%5Cxi%20%5Cin%20U%28P%29%7D%20%5C%7B%20E%5E%7B%5Cxi%7D%5BX%5D%20-%20%5Ckappa%20E%5B%5Cxi%20%5Clog%20%5Cxi%5D%20%5C%7D)
+
+![equation](https://latex.codecogs.com/png.latex?%5Ctext%7BE-CVaR%7D_%7B%5Calpha%2C%5Ckappa%7D%28X%29%20%3D%20%5Ckappa%20%5Ctext%7BE%7D%28X%29%20&plus;%20%281-%5Ckappa%29%20%5Ctext%7BCVaR%7D_%7B%5Calpha%7D%28X%29)
+
+![equation](https://latex.codecogs.com/png.latex?U%28P%29%20%3D%20%5Cleft%5C%7B%20%5Cxi%20%5C%20%3A%20%5C%20%5Csum%20%5Cxi%28%5Comega%29%20P%28%5Comega%29%20%3D%201%2C%20%5C%2C%20%5Cxi%20%5Cin%20%5Cleft%5B0%2C%20%5Cfrac%7B1%7D%7B%5Calpha%7D%20%5Cright%5D%20%5Cright%5C%7D)
 
 ### utils.py
 
