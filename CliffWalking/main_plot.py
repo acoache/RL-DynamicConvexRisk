@@ -165,7 +165,6 @@ for idx_method, method in enumerate(rm_list):
             color=utils.colors[idx_method],
             density=True)
 
-# 
 plt.rcParams.update({'font.size': 16})
 plt.rc('axes', labelsize=20)
 plt.legend(rm_list)
@@ -289,7 +288,7 @@ for idx_method, method in enumerate(rm_list):
             linestyle='-',
             color=utils.mgreen,
             linewidth=1.5)
-          
+
     plt.rcParams.update({'font.size': 16})
     plt.rc('axes', labelsize=20)
     plt.xlabel("Time")

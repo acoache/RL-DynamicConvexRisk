@@ -33,7 +33,7 @@ computer = 'personal' # 'cluster' | 'personal'
 repo_name = 'AlgoTrading_ex1'
 
 # risk measures used
-rm_list = ['mean', 'CVaR', 'CVaR-penalized'] # 'mean','CVaR','semi-dev','CVaR-penalized','mean-CVaR'
+rm_list = ['mean', 'CVaR', 'CVaR-penalized'] # 'mean' | 'CVaR' | 'semi-dev' | 'CVaR-penalized' | 'mean-CVaR'
 alpha_cvar = [-99, 0.2, 0.2] # threshold for the conditional value-at-risk
 kappa_semidev = [-99, -99, 0.2] # coefficient for the mean semideviation
 r_semidev = [-99, -99, -99] # exponent of the mean-semideviation
@@ -80,7 +80,6 @@ End of Parameters
 print('\n*** Name of the repository: ', repo_name, ' ***\n')
 print('*  T: ', params["T"],
         ' Ndt: ', params["Ndt"],
-        ' b: ', params["b"],
         ' kappa: ', params["kappa"],
         ' sigma: ', params["sigma"],
         ' theta: ', params["theta"],
@@ -106,10 +105,9 @@ print('*  alpha_cvar: ', alpha_cvar,
         ' r_semidev: ', r_semidev)
 
 # create a new directory
-if(computer == 'personal'):
+if(computer == 'personal'): # personal computer
     repo = repo_name
-if(computer == 'cluster'):
-    # get enviroment directories
+if(computer == 'cluster'): # Compute Canada server
     data_dir = os.getenv("HOME")
     output_dir = os.getenv("SCRATCH")
     repo = output_dir + '/' + repo_name
