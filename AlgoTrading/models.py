@@ -1,13 +1,17 @@
 """
 Models -- Neural Networks
-Policy and value function
-"""
-import numpy as np
+Policy and value function with fully-connected ANNs
 
+"""
+# numpy
+import numpy as np
+# pytorch
 import torch as T
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+# misc
+import pdb # use with set_trace() for the debugger
 
 # build a fully-connected neural net for the policy
 class PolicyApprox(nn.Module):

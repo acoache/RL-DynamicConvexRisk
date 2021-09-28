@@ -1,8 +1,14 @@
 """
 Environment
+
+
 """
+# numpy
 import numpy as np
+# pytorch
 import torch as T
+# misc
+import pdb # use with set_trace() for the debugger
 
 class TradingEnv():
     # constructor

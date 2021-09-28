@@ -1,8 +1,9 @@
 """
 Risk measures
-Implementation of the mean, CVaR, penalized-CVaR, semi-dev and mean-CVaR
+Implementation of the mean, CVaR, penalized-CVaR, semi-dev and mean-CVaR<
+
 """
-#numpy
+# numpy
 import numpy as np
 # pytorch
 import torch as T
@@ -23,7 +24,7 @@ class RiskMeasure():
 
         # Mean semi-deviation
         elif(self.Type == 'semi-dev'):
-            assert (kappa >= 0) and (kappa <= 1), "kappa needs to be in (0,1)"
+            assert (kappa >= 0) and (kappa <= 1), "kappa needs to be in [0,1]"
             assert isinstance(r,int) and (r >= 1), "r needs to be an integer greather than 1"
             self.kappa = kappa
             self.r = r
@@ -86,7 +87,7 @@ class RiskMeasure():
         elif(self.Type == 'mean-CVaR'):
             quant = T.quantile(x, 1-self.alpha, axis=1).unsqueeze(-1).repeat(1,x.shape[1])
             cond = x >= quant
-            RM = T.sum(x.masked_fill(~cond, 0.0), axis=1) / T.sum(cond, axis=1) \
+            RM = (1-self.kappa) * T.sum(x.masked_fill(~cond, 0.0), axis=1) / T.sum(cond, axis=1) \
                     + self.kappa * T.mean(x, axis=1)
 
         return RM
@@ -133,7 +134,7 @@ class RiskMeasure():
         elif(self.Type == 'mean-CVaR'):
             cond = x[x >= np.quantile(x,1-self.alpha)]
             cvar = np.mean(cond) if len(cond)>0 else np.quantile(x,1-self.alpha)
-            RM = cvar + self.kappa * np.mean(x)
+            RM = (1-self.kappa) * cvar + self.kappa * np.mean(x)
         
         return RM
 
@@ -179,7 +180,8 @@ class RiskMeasure():
         elif(self.Type == 'mean-CVaR'):
             quant = T.quantile(V_tp1, 1-self.alpha, axis=1).unsqueeze(-1).repeat(1,V_tp1.shape[1])
             cond = V_tp1 > quant
-            loss = T.sum( logprob.masked_fill(~cond, 0.0) * (V_tp1.masked_fill(~cond, 0.0) - quant), axis=1) \
-                    / T.sum(cond, axis=1) + self.kappa * T.mean(V_tp1 * logprob, axis=1)
+            loss = (1-self.kappa) * T.sum( logprob.masked_fill(~cond, 0.0)*(V_tp1.masked_fill(~cond, 0.0) - quant), axis=1) \
+                    / T.sum(cond, axis=1) \
+                    + self.kappa * T.mean(V_tp1 * logprob, axis=1)
 
         return loss
