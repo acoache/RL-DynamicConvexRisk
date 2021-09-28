@@ -1,5 +1,7 @@
 """
 # Policy gradient functions (actor-critic style algorithm)
+
+
 """
 # numpy
 import numpy as np
@@ -454,7 +456,6 @@ class ActorCriticPG():
         plt.clf()
 
 
-
     # plot the value function at any point in the algorithm
     def plot_current_V(self):
         hist2dim_V = np.zeros([len(self.env.spaces["pos_space"]), len(self.env.spaces["t_space"])-1])
@@ -565,57 +566,58 @@ class ActorCriticPG():
 
             print('Optimal policy, time_idx = ', str(self.env.params["T"]-time_idx-1))
         
-        # find the preferred path 
-        best_path = np.zeros(self.env.params["T"])
-        for time_idx in self.env.spaces["t_space"][:-1]:
-            pos_bin = np.digitize(best_path[time_idx], self.env.spaces["pos_space"])
-            pos_bin = pos_bin if pos_bin!=0 else 1
-            action = self.best_actions[(time_idx, pos_bin)]
-            best_path[time_idx+1] = best_path[time_idx] + action
-        
-        # plot a 2D histogram of the optimal value function
-        plt.imshow(hist2dim_V,
-                interpolation='none',
-                cmap=utils.cmap,
-                extent=[np.min(self.env.spaces["t_space"]), 
-                        np.max(self.env.spaces["t_space"]),
-                        np.min(self.env.spaces["pos_space"]),
-                        np.max(self.env.spaces["pos_space"])],
-                aspect='auto')
-        plt.rcParams.update({'font.size': 16})
-        plt.rc('axes', labelsize=20)
-        plt.title('Value function (optimal)')
-        plt.xlabel("Time")
-        plt.ylabel("Position")
-        plt.colorbar()
-        plt.tight_layout()
-        plt.savefig(self.repo + '/' + self.method +
-                    '/optimalVF.pdf', transparent=True)
-        plt.clf()
+        if plot:
+            # find the preferred path 
+            best_path = np.zeros(self.env.params["T"])
+            for time_idx in self.env.spaces["t_space"][:-1]:
+                pos_bin = np.digitize(best_path[time_idx], self.env.spaces["pos_space"])
+                pos_bin = pos_bin if pos_bin!=0 else 1
+                action = self.best_actions[(time_idx, pos_bin)]
+                best_path[time_idx+1] = best_path[time_idx] + action
+            
+            # plot a 2D histogram of the optimal value function
+            plt.imshow(hist2dim_V,
+                    interpolation='none',
+                    cmap=utils.cmap,
+                    extent=[np.min(self.env.spaces["t_space"]), 
+                            np.max(self.env.spaces["t_space"]),
+                            np.min(self.env.spaces["pos_space"]),
+                            np.max(self.env.spaces["pos_space"])],
+                    aspect='auto')
+            plt.rcParams.update({'font.size': 16})
+            plt.rc('axes', labelsize=20)
+            plt.title('Value function (optimal)')
+            plt.xlabel("Time")
+            plt.ylabel("Position")
+            plt.colorbar()
+            plt.tight_layout()
+            plt.savefig(self.repo + '/' + self.method +
+                        '/optimalVF.pdf', transparent=True)
+            plt.clf()
 
-        # plot a 2D histogram of the optimal policy
-        plt.imshow(hist2dim_pi,
-                interpolation='none',
-                cmap=utils.cmap,
-                extent=[np.min(self.env.spaces["t_space"]), 
-                        np.max(self.env.spaces["t_space"]),
-                        np.min(self.env.spaces["pos_space"]),
-                        np.max(self.env.spaces["pos_space"])],
-                aspect='auto',
-                vmin=-self.env.params["max_u"],
-                vmax=self.env.params["max_u"])
-        plt.plot(np.arange(self.env.params["T"]),
-            best_path,
-            '-o',
-            color=utils.mgreen,
-            linewidth=1.5)
-        plt.rcParams.update({'font.size': 16})
-        plt.rc('axes', labelsize=20)
-        plt.title('Best actions (optimal)')
-        plt.xlabel("Time")
-        plt.ylabel("Position")
-        plt.colorbar()
-        plt.tight_layout()
-        plt.savefig(self.repo + '/' + self.method +
-                    '/optimalACTIONS.pdf', transparent=True)
-        plt.clf()
+            # plot a 2D histogram of the optimal policy
+            plt.imshow(hist2dim_pi,
+                    interpolation='none',
+                    cmap=utils.cmap,
+                    extent=[np.min(self.env.spaces["t_space"]), 
+                            np.max(self.env.spaces["t_space"]),
+                            np.min(self.env.spaces["pos_space"]),
+                            np.max(self.env.spaces["pos_space"])],
+                    aspect='auto',
+                    vmin=-self.env.params["max_u"],
+                    vmax=self.env.params["max_u"])
+            plt.plot(np.arange(self.env.params["T"]),
+                best_path,
+                '-o',
+                color=utils.mgreen,
+                linewidth=1.5)
+            plt.rcParams.update({'font.size': 16})
+            plt.rc('axes', labelsize=20)
+            plt.title('Best actions (optimal)')
+            plt.xlabel("Time")
+            plt.ylabel("Position")
+            plt.colorbar()
+            plt.tight_layout()
+            plt.savefig(self.repo + '/' + self.method +
+                        '/optimalACTIONS.pdf', transparent=True)
+            plt.clf()

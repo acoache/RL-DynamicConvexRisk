@@ -106,10 +106,9 @@ print('*  alpha_cvar: ', alpha_cvar,
         ' r_semidev: ', r_semidev)
 
 # create a new directory
-if(computer == 'personal'):
+if(computer == 'personal'): # personal computer
     repo = repo_name
-if(computer == 'cluster'):
-    # get enviroment directories
+if(computer == 'cluster'): # Compute Canada server
     data_dir = os.getenv("HOME")
     output_dir = os.getenv("SCRATCH")
     repo = output_dir + '/' + repo_name
