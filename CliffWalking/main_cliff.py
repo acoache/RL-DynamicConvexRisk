@@ -14,7 +14,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import torch as T
 import torch.optim as optim
 # personal files
-from utils
+import utils
 from models import PolicyApprox, ValueApprox
 from risk_measure import RiskMeasure
 from envs import TradingEnv
