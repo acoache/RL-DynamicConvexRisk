@@ -52,21 +52,9 @@ class PolicyApprox(nn.Module):
     # forward propagation
     def forward(self, x):
         # normalize features with environment parameters
-        if len(x.shape)==1:
-            x[0] = (x[0] - self.env.params["theta"]) / 0.5 
-            x[1] /= self.env.params["max_q"]
-        elif len(x.shape)==2:
-            x[:,0] = (x[:,0] - self.env.params["theta"]) / 0.5 
-            x[:,1] /= self.env.params["max_q"]
-        elif len(x.shape)==3:
-            x[:,:,0] = (x[:,:,0] - self.env.params["theta"]) / 0.5 
-            x[:,:,1] /= self.env.params["max_q"]
-        elif len(x.shape)==4:
-            x[:,:,:,0] = (x[:,:,:,0] - self.env.params["theta"]) / 0.5 
-            x[:,:,:,1] /= self.env.params["max_q"]
-        else:
-            pdb.set_trace()
-
+        x[...,0] = (x[...,0] - self.env.params["theta"]) / 0.5 
+        x[...,1] /= self.env.params["max_q"]
+        
         # mean of the Gaussian policy
         loc = F.silu(self.layer1(x))
         loc = F.silu(self.layer2(loc))
@@ -107,20 +95,8 @@ class ValueApprox(nn.Module):
     # forward propagation
     def forward(self, x):
         # normalize features with environment parameters
-        if len(x.shape)==1:
-            x[0] = (x[0] - self.env.params["theta"]) / 0.5 
-            x[1] /= self.env.params["max_q"]
-        elif len(x.shape)==2:
-            x[:,0] = (x[:,0] - self.env.params["theta"]) / 0.5 
-            x[:,1] /= self.env.params["max_q"]
-        elif len(x.shape)==3:
-            x[:,:,0] = (x[:,:,0] - self.env.params["theta"]) / 0.5 
-            x[:,:,1] /= self.env.params["max_q"]
-        elif len(x.shape)==4:
-            x[:,:,:,0] = (x[:,:,:,0] - self.env.params["theta"]) / 0.5 
-            x[:,:,:,1] /= self.env.params["max_q"]
-        else:
-            pdb.set_trace()
+        x[...,0] = (x[...,0] - self.env.params["theta"]) / 0.5 
+        x[...,1] /= self.env.params["max_q"]
         
         # value of the value function
         x = F.silu(self.layer1(x))
