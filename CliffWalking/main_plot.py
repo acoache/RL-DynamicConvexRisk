@@ -14,7 +14,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import torch as T
 import torch.optim as optim
 # personal files
-from utils
+import utils
 from models import PolicyApprox, ValueApprox
 from risk_measure import RiskMeasure
 from envs import TradingEnv
@@ -121,6 +121,7 @@ for idx_method, method in enumerate(rm_list):
                                     risk_measure=risk_measure,
                                     gamma=gamma)
     actor_critic.policy.load_state_dict(T.load(repo + '/' + method + '/policy_model.pt'))
+    actor_critic.V.load_state_dict(T.load(repo + '/' + method + '/V_model.pt'))
 
     # print progress
     print('*** Training phase completed! ***')

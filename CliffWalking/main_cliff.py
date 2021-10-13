@@ -112,6 +112,7 @@ if(computer == 'cluster'): # Compute Canada server
     data_dir = os.getenv("HOME")
     output_dir = os.getenv("SCRATCH")
     repo = output_dir + '/' + repo_name
+    data_repo = data_dir + '/ComputeCanadaRepo/' + repo_name
 
 utils.directory(repo)
 
@@ -159,6 +160,10 @@ for idx_method, method in enumerate(rm_list):
 
     # obtain the optimal value function and policy
     actor_critic.optimal_policy(Nsims=Nsims_optimal, plot=True)
+
+    # # load the weights of the pre-trained model
+    # actor_critic.policy.load_state_dict(T.load(data_repo + '/' + method + '/policy_model.pt'))
+    # actor_critic.V.load_state_dict(T.load(data_repo + '/' + method + '/V_model.pt'))
 
     ## TRAINING PHASE
     # first estimate of the value function
