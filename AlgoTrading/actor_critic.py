@@ -39,7 +39,7 @@ class ActorCriticPG():
         self.method = method # sub folder for files
         self.risk_measure = risk_measure # risk measure
         self.gamma = gamma # discount factor
-        self.device = self.V.device # PyTorch device
+        self.device = self.policy.device # PyTorch device
         
         # initialize loss objects
         self.loss_history_policy = [] # keep track of all losses for the policy
