@@ -17,7 +17,7 @@ import torch.optim as optim
 import utils
 from models import PolicyApprox, ValueApprox
 from risk_measure import RiskMeasure
-from envs import TradingEnv
+from envs import CliffEnv
 from actor_critic import ActorCriticPG
 # misc
 import time
@@ -30,6 +30,7 @@ Parameters
 
 # running on a personal computer or a Compute Canada server
 computer = 'personal' # 'cluster' | 'personal'
+preload = False # load pre-trained model prior to the training phase
 repo_name = 'CliffWalking_ex1'
 
 # risk measures used
@@ -123,7 +124,7 @@ for idx_method, method in enumerate(rm_list):
     start_time = time.time()
 
     # create the environment and risk measure objects
-    env = TradingEnv(params)
+    env = CliffEnv(params)
     risk_measure = RiskMeasure(Type=method,
                                 alpha=alpha_cvar[idx_method],
                                 kappa=kappa_semidev[idx_method],
@@ -161,9 +162,10 @@ for idx_method, method in enumerate(rm_list):
     # obtain the optimal value function and policy
     actor_critic.optimal_policy(Nsims=Nsims_optimal, plot=True)
 
-    # # load the weights of the pre-trained model
-    # actor_critic.policy.load_state_dict(T.load(data_repo + '/' + method + '/policy_model.pt'))
-    # actor_critic.V.load_state_dict(T.load(data_repo + '/' + method + '/V_model.pt'))
+    if preload:
+        # load the weights of the pre-trained model
+        actor_critic.policy.load_state_dict(T.load(data_repo + '/' + method + '/policy_model.pt'))
+        actor_critic.V.load_state_dict(T.load(data_repo + '/' + method + '/V_model.pt'))
 
     ## TRAINING PHASE
     # first estimate of the value function

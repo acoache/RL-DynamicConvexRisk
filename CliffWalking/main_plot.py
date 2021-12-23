@@ -17,7 +17,7 @@ import torch.optim as optim
 import utils
 from models import PolicyApprox, ValueApprox
 from risk_measure import RiskMeasure
-from envs import TradingEnv
+from envs import CliffEnv
 from actor_critic import ActorCriticPG
 # misc
 import time
@@ -72,6 +72,10 @@ seed = 4321 # set seed for replication purposes
 # testing phase parameters
 Nsimulations = 30000 # number of simulations following the optimal strategy
 
+# font sizes for figures
+plt.rcParams.update({'font.size': 16})
+plt.rc('axes', labelsize=20)
+
 """
 End of Parameters
 """
@@ -104,7 +108,7 @@ for idx_method, method in enumerate(rm_list):
     start_time = time.time()
 
     # create the (temporary) environment and risk measure objects
-    env = TradingEnv(params)
+    env = CliffEnv(params)
     risk_measure = RiskMeasure(Type='mean')
 
     # create policy & value function objects
@@ -146,104 +150,7 @@ for idx_method, method in enumerate(rm_list):
     # get terminal reward
     rewards[:,-1,idx_method] = env.get_final_reward(pos).detach().numpy()
 
-"""
-# Plots & figures
-"""
-
-# plot rewards instead of costs
-Total_r = -1 * np.sum(rewards, axis=1)
-
-# set a grid for the histogram
-grid = np.linspace(np.min(Total_r), np.max(Total_r), 100)
-
-### PLOT 1 - Distribution of the terminal reward
-for idx_method, method in enumerate(rm_list):
-    # plot the histogram for each method
-    reward = Total_r[:,idx_method]
-    plt.hist(x=Total_r[:,idx_method],
-            alpha=0.4,
-            bins=grid,
-            color=utils.colors[idx_method],
-            density=True)
-
-plt.rcParams.update({'font.size': 16})
-plt.rc('axes', labelsize=20)
-plt.legend(rm_list)
-plt.xlabel("Terminal reward")
-plt.ylabel("Density")
-plt.title("Distribution of the terminal reward")
-
-for idx_method, method in enumerate(rm_list):
-    # plot gaussian KDEs
-    kde = gaussian_kde(Total_r[:,idx_method], bw_method='silverman')
-    plt.plot(grid,
-            kde(grid),
-            color=utils.colors[idx_method],
-            linewidth=1.5)
-    # plot quantiles of the distributions
-    plt.axvline(x=np.quantile(Total_r[:,idx_method],0.1),
-                linestyle='dashed',
-                color=utils.colors[idx_method],
-                linewidth=1.0)
-    # plt.axvline(x=np.mean(Total_r[:,idx_method]),
-    #             linestyle='dotted',
-    #             color=utils.colors[idx_method],
-    #             linewidth=1.0)
-    plt.axvline(x=np.quantile(Total_r[:,idx_method],0.9),
-                linestyle='dashed',
-                color=utils.colors[idx_method],
-                linewidth=1.0)
-
-plt.tight_layout()
-plt.savefig(repo + '/comparison_terminal_cost.pdf', transparent=True)
-plt.clf()
-
-### PLOT 2 - Paths of the rover over several simulations
-for idx_method, method in enumerate(rm_list):
-    # plot median of the different paths
-    plt.plot(np.arange(env.params["T"]),
-            np.quantile(positions[:,:,idx_method],0.5, axis=0),
-            linestyle='-',
-            color=utils.colors[idx_method],
-            linewidth=1.0)
-
-plt.rcParams.update({'font.size': 16})
-plt.rc('axes', labelsize=20)
-plt.legend(rm_list)
-plt.xlabel("Time")
-plt.ylabel("Position")
-plt.title("")
-
-# plot the cliff
-plt.axhline(y=params["cliff"],
-    color='black',
-    linestyle='--',
-    linewidth=1.0)
-
-for idx_method, method in enumerate(rm_list):
-    # plot quantiles of the different paths
-    plt.plot(np.arange(env.params["T"]),
-            np.quantile(positions[:,:,idx_method],0.1, axis=0),
-            linestyle='-',
-            color=utils.colors[idx_method],
-            linewidth=1.0)
-    plt.plot(np.arange(env.params["T"]),
-            np.quantile(positions[:,:,idx_method],0.9, axis=0),
-            linestyle='-',
-            color=utils.colors[idx_method],
-            linewidth=1.0)
-    # plt.fill_between(np.arange(env.params["T"]),
-    #                 np.quantile(positions[:,:,idx_method],0.1, axis=0),
-    #                 np.quantile(positions[:,:,idx_method],0.9, axis=0),
-    #                 color=utils.colors[idx_method],  
-    #                 alpha=0.4)
-
-plt.tight_layout()
-plt.savefig(repo + '/comparison_paths.pdf', transparent=True)
-plt.clf()
-
-### PLOT 3 - policy with the paths
-for idx_method, method in enumerate(rm_list):
+    ### PLOT - policy with the paths
     # initialize 2D histogram
     hist2dim_pi = np.zeros([len(env.spaces["pos_space"]), len(env.spaces["t_space"])-1])
     
@@ -290,8 +197,6 @@ for idx_method, method in enumerate(rm_list):
             color=utils.mgreen,
             linewidth=1.5)
 
-    plt.rcParams.update({'font.size': 16})
-    plt.rc('axes', labelsize=20)
     plt.xlabel("Time")
     plt.ylabel("Position")
     plt.title("Learned Policy")
@@ -299,6 +204,98 @@ for idx_method, method in enumerate(rm_list):
     plt.tight_layout()
     plt.savefig(repo + '/learnedpolicy_' + method + '_paths.pdf', transparent=True)
     plt.clf()
+
+"""
+# Plots & figures
+"""
+
+# plot rewards instead of costs
+Total_r = -1 * np.sum(rewards, axis=1)
+
+# set a grid for the histogram
+grid = np.linspace(np.min(Total_r), np.max(Total_r), 100)
+
+### PLOT - Distribution of the terminal reward
+for idx_method, method in enumerate(rm_list):
+    # plot the histogram for each method
+    reward = Total_r[:,idx_method]
+    plt.hist(x=Total_r[:,idx_method],
+            alpha=0.4,
+            bins=grid,
+            color=utils.colors[idx_method],
+            density=True)
+
+plt.legend(rm_list)
+plt.xlabel("Terminal reward")
+plt.ylabel("Density")
+plt.title("Distribution of the terminal reward")
+
+for idx_method, method in enumerate(rm_list):
+    # plot gaussian KDEs
+    kde = gaussian_kde(Total_r[:,idx_method], bw_method='silverman')
+    plt.plot(grid,
+            kde(grid),
+            color=utils.colors[idx_method],
+            linewidth=1.5)
+    # plot quantiles of the distributions
+    plt.axvline(x=np.quantile(Total_r[:,idx_method],0.1),
+                linestyle='dashed',
+                color=utils.colors[idx_method],
+                linewidth=1.0)
+    # plt.axvline(x=np.mean(Total_r[:,idx_method]),
+    #             linestyle='dotted',
+    #             color=utils.colors[idx_method],
+    #             linewidth=1.0)
+    plt.axvline(x=np.quantile(Total_r[:,idx_method],0.9),
+                linestyle='dashed',
+                color=utils.colors[idx_method],
+                linewidth=1.0)
+
+plt.tight_layout()
+plt.savefig(repo + '/comparison_terminal_cost.pdf', transparent=True)
+plt.clf()
+
+### PLOT - Paths of the rover over several simulations
+for idx_method, method in enumerate(rm_list):
+    # plot median of the different paths
+    plt.plot(np.arange(env.params["T"]),
+            np.quantile(positions[:,:,idx_method],0.5, axis=0),
+            linestyle='-',
+            color=utils.colors[idx_method],
+            linewidth=1.0)
+
+plt.legend(rm_list)
+plt.xlabel("Time")
+plt.ylabel("Position")
+plt.title("")
+
+# plot the cliff
+plt.axhline(y=params["cliff"],
+    color='black',
+    linestyle='--',
+    linewidth=1.0)
+
+for idx_method, method in enumerate(rm_list):
+    # plot quantiles of the different paths
+    plt.plot(np.arange(env.params["T"]),
+            np.quantile(positions[:,:,idx_method],0.1, axis=0),
+            linestyle='-',
+            color=utils.colors[idx_method],
+            linewidth=1.0)
+    plt.plot(np.arange(env.params["T"]),
+            np.quantile(positions[:,:,idx_method],0.9, axis=0),
+            linestyle='-',
+            color=utils.colors[idx_method],
+            linewidth=1.0)
+    # plt.fill_between(np.arange(env.params["T"]),
+    #                 np.quantile(positions[:,:,idx_method],0.1, axis=0),
+    #                 np.quantile(positions[:,:,idx_method],0.9, axis=0),
+    #                 color=utils.colors[idx_method],  
+    #                 alpha=0.4)
+
+plt.tight_layout()
+plt.savefig(repo + '/comparison_paths.pdf', transparent=True)
+plt.clf()
 
 # print progress
 print('*** Testing phase completed! ***')

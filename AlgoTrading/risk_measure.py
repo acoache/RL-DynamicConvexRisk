@@ -8,7 +8,7 @@ import numpy as np
 # pytorch
 import torch as T
 # misc
-import cvxpy as cp
+#import cvxpy as cp
 from scipy import optimize
 import pdb # use with set_trace() for the debugger
 

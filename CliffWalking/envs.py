@@ -10,7 +10,7 @@ import torch as T
 # misc
 import pdb # use with set_trace() for the debugger
 
-class TradingEnv():
+class CliffEnv():
     # constructor
     def __init__(self, params):
         # parameters and spaces
@@ -43,9 +43,6 @@ class TradingEnv():
         r = - self.params["C_time"]*T.ones(sizes) \
             - self.params["C_cliff"]*((pos_tp1 < self.params["cliff"]) & (time_tp1 != self.params["T"]-1)) \
             - self.params["C_move"](u_t)
-        # r = - self.params["C_time"]*T.ones(sizes) \
-        #     - self.params["C_cliff"]*((pos_t < self.params["cliff"]) & (time_t != 0)) \
-        #     - self.params["C_move"](u_t)
 
         return pos_tp1, time_tp1, -r
 
@@ -66,9 +63,6 @@ class TradingEnv():
         r = - self.params["C_time"]*np.ones(Nsims) \
             - self.params["C_cliff"]*((pos_tp1 < self.params["cliff"]) & (time_tp1 != self.params["T"]-1)) \
             - self.params["C_move"](u_t)
-        # r = - self.params["C_time"]*np.ones(Nsims) \
-        #     - self.params["C_cliff"]*((pos_t < self.params["cliff"]) & (time_t != 0)) \
-        #     - self.params["C_move"](u_t)
 
         return pos_tp1, time_tp1, -r
 

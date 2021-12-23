@@ -56,8 +56,10 @@ class TradingEnv():
         s_tp1 = self.params["theta"] + \
                 (s_t-self.params["theta"]) * np.exp(-self.params["kappa"]*dt) + \
                 eta * T.randn(sizes, device=self.device)
+
         # inventory modification - add the trade to current inventory
         q_tp1 = q_t + u_t
+        
         # reward - profit with transaction costs
         r = - s_t*u_t - self.params["phi"]*T.pow(u_t,2)
         
@@ -84,8 +86,10 @@ class TradingEnv():
         s_tp1 = self.params["theta"] + \
                 (s_t-self.params["theta"]) * np.exp(-self.params["kappa"]*dt) + \
                 eta * np.random.randn(Nsims)
+
         # inventory modification - add the trade to current inventory
         q_tp1 = q_t + u_t
+
         # reward - profit with transaction costs
         r = - s_t*u_t - self.params["phi"]*(u_t**2)
         

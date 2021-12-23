@@ -67,6 +67,10 @@ seed = 4321 # set seed for replication purposes
 # testing phase parameters
 Nsimulations = 30000 # number of simulations following the optimal strategy
 
+# font sizes for figures
+plt.rcParams.update({'font.size': 16})
+plt.rc('axes', labelsize=20)
+
 """
 End of Parameters
 """
@@ -143,6 +147,40 @@ for idx_method, method in enumerate(rm_list):
     # get terminal reward
     rewards[:,-1,idx_method] = env.get_final_reward(s, q).detach().numpy()
 
+    ### PLOT - policy for each period
+    for time_idx in env.spaces["t_space"][:-1][::-1]:
+        # initialize 2D histogram
+        hist2dim_pi = np.zeros([len(env.spaces["s_space"]), len(env.spaces["q_space"])])
+
+        for s_idx, s_val in enumerate(env.spaces["s_space"]):
+            for q_idx, q_val in enumerate(env.spaces["q_space"]):
+                # best action according to the policy
+                hist2dim_pi[len(env.spaces["s_space"])-s_idx-1, q_idx], _ = \
+                        actor_critic.select_actions(T.Tensor([s_val]).to(actor_critic.device),
+                                                    T.Tensor([q_val]).to(actor_critic.device),
+                                                    T.tensor([time_idx]).to(actor_critic.device),
+                                                    'best')
+
+        # plot the 2D histogram
+        plt.imshow(hist2dim_pi,
+                interpolation='none',
+                cmap=utils.cmap,
+                extent=[np.min(env.spaces["q_space"]),
+                        np.max(env.spaces["q_space"]),
+                        np.min(env.spaces["s_space"]),
+                        np.max(env.spaces["s_space"])],
+                aspect='auto',
+                vmin=-env.params["max_u"],
+                vmax=env.params["max_u"])
+        
+        plt.title('Learned Policy; Time step:' + str(time_idx+1))
+        plt.xlabel("Inventory")
+        plt.ylabel("Price")
+        plt.colorbar()
+        plt.tight_layout()
+        plt.savefig(repo + '/learnedpolicy_' + method + '_' + str(time_idx+1) + '.pdf', transparent=True)
+        plt.clf()
+
 """
 # Plots & figures
 """
@@ -152,7 +190,7 @@ Total_r = -1 * np.sum(rewards, axis=1)
 # set a grid for the histogram
 grid = np.linspace(np.min(Total_r), np.max(Total_r), 100)
 
-### PLOT 1 - Distribution of the terminal reward
+### PLOT - Distribution of the terminal reward
 for idx_method, method in enumerate(rm_list):
     # plot the histogram for each method
     reward = Total_r[:,idx_method]
@@ -162,8 +200,6 @@ for idx_method, method in enumerate(rm_list):
             color=utils.colors[idx_method],
             density=True)
 
-plt.rcParams.update({'font.size': 16})
-plt.rc('axes', labelsize=20)
 plt.legend(rm_list)
 plt.xlabel("Terminal wealth")
 plt.ylabel("Density")
@@ -193,43 +229,6 @@ for idx_method, method in enumerate(rm_list):
 plt.tight_layout()
 plt.savefig(repo + '/comparison_terminal_cost.pdf', transparent=True)
 plt.clf()
-
-### PLOT 2 - policy for each period
-for idx_method, method in enumerate(rm_list):
-    for time_idx in env.spaces["t_space"][:-1][::-1]:
-        # initialize 2D histogram
-        hist2dim_pi = np.zeros([len(env.spaces["s_space"]), len(env.spaces["q_space"])])
-
-        for s_idx, s_val in enumerate(env.spaces["s_space"]):
-            for q_idx, q_val in enumerate(env.spaces["q_space"]):
-                # best action according to the policy
-                hist2dim_pi[len(env.spaces["s_space"])-s_idx-1, q_idx], _ = \
-                        actor_critic.select_actions(T.Tensor([s_val]).to(actor_critic.device),
-                                                    T.Tensor([q_val]).to(actor_critic.device),
-                                                    T.tensor([time_idx]).to(actor_critic.device),
-                                                    'best')
-
-        # plot the 2D histogram
-        plt.imshow(hist2dim_pi,
-                interpolation='none',
-                cmap=utils.cmap,
-                extent=[np.min(env.spaces["q_space"]),
-                        np.max(env.spaces["q_space"]),
-                        np.min(env.spaces["s_space"]),
-                        np.max(env.spaces["s_space"])],
-                aspect='auto',
-                vmin=-env.params["max_u"],
-                vmax=env.params["max_u"])
-        
-        plt.rcParams.update({'font.size': 16})
-        plt.rc('axes', labelsize=20)
-        plt.title('Learned Policy; Time step:' + str(time_idx+1))
-        plt.xlabel("Inventory")
-        plt.ylabel("Price")
-        plt.colorbar()
-        plt.tight_layout()
-        plt.savefig(repo + '/learnedpolicy_' + method + '_' + str(time_idx+1) + '.pdf', transparent=True)
-        plt.clf()
 
 # print progress
 print('*** Testing phase completed! ***')
