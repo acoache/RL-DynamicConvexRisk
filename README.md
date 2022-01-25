@@ -5,7 +5,7 @@ This Github repository regroups the Python code to run the actor-critic algorith
 * hyperparams.py
 * main.py
 * main_plot.py
-* actor_critic.py
+* actor_critic.py 
 * envs.py
 * models.py
 * risk_measure.py
