@@ -14,7 +14,7 @@ import torch as T
 import torch.optim as optim
 from torch.distributions import Normal
 # misc
-import utils
+from . import utils
 from datetime import datetime
 import pdb # use with set_trace() for the debugger
 
