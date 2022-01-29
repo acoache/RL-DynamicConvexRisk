@@ -1,6 +1,10 @@
 # Reinforcement Learning with Dynamic Convex Risk Measures
 
-This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://arxiv.org/abs/2112.13414). There is one folder for each set of experiments, respectively the algorithmic trading, cliff walking and hedging problems. All folders have the same structure, with the following files: 
+This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://arxiv.org/abs/2112.13414). There is one folder for each set of experiments, respectively the statistical arbitrage, cliff walking and hedging with friction examples. There is also a Python notebook to showcase how to use our code and replicate some of the experiments.
+
+*** 
+
+All folders have the same structure, with the following files: 
 
 * hyperparams.py
 * main.py
