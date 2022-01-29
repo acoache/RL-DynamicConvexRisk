@@ -1,6 +1,15 @@
 # Reinforcement Learning with Dynamic Convex Risk Measures
 
-This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://arxiv.org/abs/2112.13414) by [Anthony Coache](https://anthonycoache.ca/) and [Sebastian Jaimungal](http://sebastian.statistics.utoronto.ca/). There is one folder for each set of experiments, respectively the statistical arbitrage, cliff walking and hedging with friction examples. There is also a Python notebook to showcase how to use our code and replicate some of the experiments.
+This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://arxiv.org/abs/2112.13414) by [Anthony Coache](https://anthonycoache.ca/) and [Sebastian Jaimungal](http://sebastian.statistics.utoronto.ca/). There is one folder for each set of experiments, respectively the [statistical arbitrage](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/StatArbitrage), [cliff walking](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/CliffWalking) and [hedging](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/Hedging) with friction examples. There is also a [Python notebook](https://github.com/acoache/RL-DynamicConvexRisk/blob/main/notebook.ipynb) to showcase how to use our code and replicate some of the experiments.
+
+
+For further details on the algorithm and theoretical aspects of the problem, please refer to our [paper](https://arxiv.org/abs/2112.13414).
+
+Thank you for your interest in my research work. If you have any additional enquiries, please reach out to myself at anthony.coache@mail.utoronto.ca.
+
+#### Authors
+
+[Anthony Coache](https://anthonycoache.ca/) & [Sebastian Jaimungal](http://sebastian.statistics.utoronto.ca/)
 
 *** 
 
@@ -63,11 +72,3 @@ This file has the class that creates an instance of a risk measure, with functio
 This file contains some useful functions and variables, such as a function to create new directories and colors for the visualizations.
 
 ***
-
-For further details on the algorithm and theoretical aspects of the problem, please refer to our [paper](https://arxiv.org/abs/2112.13414).
-
-Thank you for your interest in my research work. If you have any additional enquiries, please reach out to myself at anthony.coache@mail.utoronto.ca.
-
-#### Authors
-
-[Anthony Coache](https://anthonycoache.ca/) & [Sebastian Jaimungal](http://sebastian.statistics.utoronto.ca/)
