@@ -39,21 +39,15 @@ class PolicyApprox(nn.Module):
         
         # build all layers
         self.layer1 = nn.Linear(self.input_size, self.hidden_size)
-
-        self.hidden_layers = []
-        for i in range(self.n_layers-1):
-            self.hidden_layers.append(nn.Linear(self.hidden_size, self.hidden_size))
-
+        self.hidden_layers = nn.ModuleList([nn.Linear(self.hidden_size, self.hidden_size) for i in range(self.n_layers-1)])
         self.layerN = nn.Linear(self.hidden_size, self.output_size)
 
         # initializers for weights and biases
         nn.init.normal_(self.layer1.weight, mean=0, std=1/np.sqrt(input_size)/2)
         nn.init.constant_(self.layer1.bias, 0)
-
         for layer in self.hidden_layers:
             nn.init.normal_(layer.weight, mean=0, std=1/np.sqrt(input_size)/2)
             nn.init.constant_(layer.bias, 0)
-
         nn.init.normal_(self.layerN.weight, mean=0, std=1/np.sqrt(input_size)/2)
         nn.init.constant_(self.layerN.bias, 0)
 
@@ -83,18 +77,6 @@ class PolicyApprox(nn.Module):
 
         return loc, scale
 
-    # define parameters of the ANN
-    def parameters(self):
-        
-        params = list(self.layer1.parameters())
-        
-        for layer in self.hidden_layers:
-            params += list(layer.parameters())
-            
-        params += list(self.layerN.parameters())
-        
-        return params
-
 
 # build a fully-connected neural net for the value function
 class ValueApprox(nn.Module):
@@ -111,11 +93,7 @@ class ValueApprox(nn.Module):
         
         # build all layers
         self.layer1 = nn.Linear(self.input_size, self.hidden_size)
-
-        self.hidden_layers = []
-        for i in range(self.n_layers-1):
-            self.hidden_layers.append(nn.Linear(self.hidden_size, self.hidden_size))
-
+        self.hidden_layers = nn.ModuleList([nn.Linear(self.hidden_size, self.hidden_size) for i in range(self.n_layers-1)])
         self.layerN = nn.Linear(self.hidden_size, self.output_size)
         
         # optimizer
@@ -138,15 +116,3 @@ class ValueApprox(nn.Module):
         x = T.clamp(self.layerN(x), min=-30, max=30)
 
         return x
-
-    # define parameters of the ANN
-    def parameters(self):
-        
-        params = list(self.layer1.parameters())
-
-        for layer in self.hidden_layers:
-            params += list(layer.parameters())
-            
-        params += list(self.layerN.parameters())
-        
-        return params
