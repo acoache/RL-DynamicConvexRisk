@@ -3,7 +3,7 @@
 This Github repository regroups the Python code to run the actor-critic algorithm and replicate the experiments given in the paper [Reinforcement Learning with Dynamic Convex Risk Measures](https://arxiv.org/abs/2112.13414) by [Anthony Coache](https://anthonycoache.ca/) and [Sebastian Jaimungal](http://sebastian.statistics.utoronto.ca/). There is one folder for each set of experiments, respectively the [statistical arbitrage](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/StatArbitrage), [cliff walking](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/CliffWalking) and [hedging](https://github.com/acoache/RL-DynamicConvexRisk/tree/main/Hedging) with friction examples. There is also a [Python notebook](https://github.com/acoache/RL-DynamicConvexRisk/blob/main/notebook.ipynb) to showcase how to use our code and replicate some of the experiments.
 
 
-For further details on the algorithm and theoretical aspects of the problem, please refer to our [paper](https://arxiv.org/abs/2112.13414).
+For further details on the algorithm and theoretical aspects of the problem, please refer to our [paper](https://doi.org/10.1111/mafi.12388).
 
 Thank you for your interest in my research work. If you have any additional enquiries, please reach out to myself at anthony.coache@mail.utoronto.ca.
 
@@ -32,7 +32,7 @@ This file contains functions to initialize and print all hyperparameters, both f
 
 ### main.py
 
-This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user in the hyperparams.py file are the numbers of epochs, learning rates, size of the neural networks and number of episodes/transitions among others. The next section is the training phase and its skeleton is given in the [paper](https://arxiv.org/abs/2112.13414). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
+This file contains the program to run the training phase. The first part concerns the importation of libraries and initialization of all parameters, either for the environment, neural networks or risk measure. Some notable parameters that need to be specified by the user in the hyperparams.py file are the numbers of epochs, learning rates, size of the neural networks and number of episodes/transitions among others. The next section is the training phase and its skeleton is given in the [paper](https://doi.org/10.1111/mafi.12388). It uses mostly functions from the actor_critic.py file. Finally, the models for the policy and value function are saved in a folder, along with diagnostic plots.
 
 ### main_plot.py
 
